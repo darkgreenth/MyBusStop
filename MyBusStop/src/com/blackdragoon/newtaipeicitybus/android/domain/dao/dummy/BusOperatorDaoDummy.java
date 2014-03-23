@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,18 +20,31 @@ import com.blackdragoon.newtaipeicitybus.android.domain.dao.BusOperatorDao;
 
 public class BusOperatorDaoDummy implements BusOperatorDao {
 
-	private String TAG = "BusOperatorDaoDummy";
+	private static final  String TAG = "BusOperatorDaoDummy";
 	
 	
-	private static List<BusOperator> convertJsonToBusOperatorList(JSONArray jsonArray){
-		return null;
+	private static List<BusOperator> convertJsonToBusOperatorList(JSONArray jsonArray) throws JSONException{
+		List<BusOperator>busOperators = new ArrayList<BusOperator>();
+		Log.d(TAG, "jsonArray length : "+jsonArray.length());
+		for(int i=0;i<jsonArray.length();i++){
+			JSONObject jBusOperator = jsonArray.getJSONObject(i);
+			BusOperator busOperator = new BusOperator();
+			busOperator.setId(jBusOperator.getString(ATTR_ID));
+			busOperator.setNameZh(jBusOperator.getString(ATTR_NAME_ZH));
+			busOperator.setType(jBusOperator.getString(ATTR_TYPE));
+			busOperators.add(busOperator);
+		}
+		
+		
+		return busOperators;
 	}
+	
+	private List<BusOperator> result = null;
 
 	@Override
 	public List<BusOperator> getBusOperators(Context context) {
 		// TODO Auto-generated method stub
 
-		List<BusOperator> result = new ArrayList<BusOperator>();
 		
 		RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -42,6 +57,11 @@ public class BusOperatorDaoDummy implements BusOperatorDao {
 					public void onResponse(JSONArray response) {
 						// TODO Auto-generated method stub
 						Log.d(TAG, "array length : " + response.length());
+						try {
+							result = convertJsonToBusOperatorList(response);
+						} catch (JSONException e) {
+							Log.e(TAG, e.getMessage());
+						}
 					}
 
 				}, new Response.ErrorListener() {

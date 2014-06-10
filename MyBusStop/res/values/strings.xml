@@ -4,5 +4,8 @@
     <string name="app_name">MyBusStop</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="label1">label1</string>
+
+    <integer name="main_function_cols_number">2</integer>
 
 </resources>

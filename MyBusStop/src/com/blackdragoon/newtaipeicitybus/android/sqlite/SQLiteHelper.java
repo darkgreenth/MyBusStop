@@ -10,13 +10,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	public SQLiteHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
-		// TODO Auto-generated constructor stub
 	}
 
+	private static final String STMT_CREATE_BUS_OPERATORS = "CREATE TABLE IF "
+			+ "NOT EXISTS BUS_OPERATORS "
+			+ "(TYPE VARCHAR, NAME_ZH VARCHAR, NAME_EN VARCHAR, ID VARCHAR,UPDATE_TIME INTEGER);";
+
 	@Override
-	public void onCreate(SQLiteDatabase arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onCreate(SQLiteDatabase database) {
+		database.execSQL(STMT_CREATE_BUS_OPERATORS);
 	}
 
 	@Override
